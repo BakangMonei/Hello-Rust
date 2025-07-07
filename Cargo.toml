@@ -1,0 +1,10 @@
+[package]
+name = "hello-ngrok"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.4"
+ngrok = { version = "0.15.0", features = ["axum"] }
+tokio = { version = "1.46.1", features = ["rt-multi-thread", "macros"] }
+ferris-says = "0.3.1"
