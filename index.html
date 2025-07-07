@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rust Scientific Calculator</title>
+    <link rel="stylesheet" href="./static/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1><i class="fas fa-calculator"></i> Rust Scientific Calculator</h1>
+        <p>A powerful calculator built with Rust and modern web technologies</p>
+      </header>
+
+      <div class="calculator-container">
+        <!-- Display Section -->
+        <div class="display-section">
+          <div class="history-display" id="historyDisplay"></div>
+          <div class="main-display" id="mainDisplay">0</div>
+          <div class="memory-indicator" id="memoryIndicator"></div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+          <button class="mode-btn active" data-mode="basic">
+            <i class="fas fa-plus-minus"></i> Basic
+          </button>
+          <button class="mode-btn" data-mode="scientific">
+            <i class="fas fa-square-root-alt"></i> Scientific
+          </button>
+          <button class="mode-btn" data-mode="memory">
+            <i class="fas fa-memory"></i> Memory
+          </button>
+        </div>
+
+        <!-- Basic Calculator -->
+        <div class="calculator basic-calc" id="basicCalc">
+          <div class="button-row">
+            <button class="btn function-btn" onclick="clearAll()">AC</button>
+            <button class="btn function-btn" onclick="clearEntry()">CE</button>
+            <button class="btn function-btn" onclick="backspace()">
+              <i class="fas fa-backspace"></i>
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('/')">
+              ÷
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('7')">
+              7
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('8')">
+              8
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('9')">
+              9
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('*')">
+              ×
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('4')">
+              4
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('5')">
+              5
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('6')">
+              6
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('-')">
+              −
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('1')">
+              1
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('2')">
+              2
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('3')">
+              3
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('+')">
+              +
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('0')">
+              0
+            </button>
+            <button class="btn number-btn" onclick="appendDecimal()">.</button>
+            <button class="btn function-btn" onclick="toggleSign()">±</button>
+            <button class="btn equals-btn" onclick="calculate()">=</button>
+          </div>
+        </div>
+
+        <!-- Scientific Calculator -->
+        <div class="calculator scientific-calc hidden" id="scientificCalc">
+          <div class="scientific-row">
+            <button class="btn function-btn" onclick="calculateFunction('sin')">
+              sin
+            </button>
+            <button class="btn function-btn" onclick="calculateFunction('cos')">
+              cos
+            </button>
+            <button class="btn function-btn" onclick="calculateFunction('tan')">
+              tan
+            </button>
+            <button class="btn function-btn" onclick="calculateFunction('ln')">
+              ln
+            </button>
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('log10')"
+            >
+              log
+            </button>
+          </div>
+          <div class="scientific-row">
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('sqrt')"
+            >
+              √
+            </button>
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('power')"
+            >
+              x^y
+            </button>
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('factorial')"
+            >
+              x!
+            </button>
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('reciprocal')"
+            >
+              1/x
+            </button>
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('square')"
+            >
+              x²
+            </button>
+          </div>
+          <div class="scientific-row">
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('degrees_to_radians')"
+            >
+              °→rad
+            </button>
+            <button
+              class="btn function-btn"
+              onclick="calculateFunction('radians_to_degrees')"
+            >
+              rad→°
+            </button>
+            <button class="btn function-btn" onclick="calculateFunction('pi')">
+              π
+            </button>
+            <button class="btn function-btn" onclick="calculateFunction('e')">
+              e
+            </button>
+            <button class="btn function-btn" onclick="calculateFunction('abs')">
+              |x|
+            </button>
+          </div>
+          <!-- Basic operations in scientific mode -->
+          <div class="button-row">
+            <button class="btn function-btn" onclick="clearAll()">AC</button>
+            <button class="btn function-btn" onclick="clearEntry()">CE</button>
+            <button class="btn function-btn" onclick="backspace()">
+              <i class="fas fa-backspace"></i>
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('/')">
+              ÷
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('7')">
+              7
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('8')">
+              8
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('9')">
+              9
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('*')">
+              ×
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('4')">
+              4
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('5')">
+              5
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('6')">
+              6
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('-')">
+              −
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('1')">
+              1
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('2')">
+              2
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('3')">
+              3
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('+')">
+              +
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('0')">
+              0
+            </button>
+            <button class="btn number-btn" onclick="appendDecimal()">.</button>
+            <button class="btn function-btn" onclick="toggleSign()">±</button>
+            <button class="btn equals-btn" onclick="calculate()">=</button>
+          </div>
+        </div>
+
+        <!-- Memory Calculator -->
+        <div class="calculator memory-calc hidden" id="memoryCalc">
+          <div class="memory-row">
+            <button class="btn memory-btn" onclick="memoryStore()">MS</button>
+            <button class="btn memory-btn" onclick="memoryRecall()">MR</button>
+            <button class="btn memory-btn" onclick="memoryAdd()">M+</button>
+            <button class="btn memory-btn" onclick="memorySubtract()">
+              M-
+            </button>
+            <button class="btn memory-btn" onclick="memoryClear()">MC</button>
+          </div>
+          <div class="memory-display">
+            <span>Memory: <span id="memoryValue">0</span></span>
+          </div>
+          <!-- Basic operations in memory mode -->
+          <div class="button-row">
+            <button class="btn function-btn" onclick="clearAll()">AC</button>
+            <button class="btn function-btn" onclick="clearEntry()">CE</button>
+            <button class="btn function-btn" onclick="backspace()">
+              <i class="fas fa-backspace"></i>
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('/')">
+              ÷
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('7')">
+              7
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('8')">
+              8
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('9')">
+              9
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('*')">
+              ×
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('4')">
+              4
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('5')">
+              5
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('6')">
+              6
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('-')">
+              −
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('1')">
+              1
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('2')">
+              2
+            </button>
+            <button class="btn number-btn" onclick="appendNumber('3')">
+              3
+            </button>
+            <button class="btn operator-btn" onclick="setOperator('+')">
+              +
+            </button>
+          </div>
+          <div class="button-row">
+            <button class="btn number-btn" onclick="appendNumber('0')">
+              0
+            </button>
+            <button class="btn number-btn" onclick="appendDecimal()">.</button>
+            <button class="btn function-btn" onclick="toggleSign()">±</button>
+            <button class="btn equals-btn" onclick="calculate()">=</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Panel -->
+      <div class="history-panel" id="historyPanel">
+        <div class="history-header">
+          <h3><i class="fas fa-history"></i> Calculation History</h3>
+          <button class="clear-history-btn" onclick="clearHistory()">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+    </div>
+
+    <script src="./static/script.js"></script>
+  </body>
+</html>

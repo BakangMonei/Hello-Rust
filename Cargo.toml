@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.8.4"
-ngrok = { version = "0.15.0", features = ["axum"] }
 tokio = { version = "1.46.1", features = ["rt-multi-thread", "macros"] }
-ferris-says = "0.3.1"
+tower-http = { version = "0.5", features = ["fs", "cors"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
